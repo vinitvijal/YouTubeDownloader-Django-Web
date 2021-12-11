@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="header">
-        <div>
+        <div onclick="home()" style="cursor: pointer">
             <span style="color: white;"><span style="color: rgb(255, 102, 0);">You</span>Tube Downloader - <span style="font-size: medium;">Vinu Code.</span></span>
         </div>
     </div>
@@ -23,19 +23,20 @@
                 <h3>Enter Your Video Link</h3>
             </div>
             <div>
-                <form class="verifFyorm" method="post" style="flex-direction: row;">
+                <form class="verifFyorm" method="POST" style="flex-direction: row;">
                     {% csrf_token %}
                     <input type="text" id="link" class="link" name="link">
-                    <button id="verify" class="verify" type="submit">Verify</button>
-                </form>
+                    <button name="verify" id="verify" class="verify" type="submit">Verify</button>
+
             </div>
-            <div>
+            <div style="margin-top: 10px">
                 <p id="titleName" name="titleName" >{{ videoName }}</p>
 
             </div>
-            <div>
-                <button id="download" class="downloadButton" type="submit" disabled>Download</button>
+            <div id="download" style="margin-top: 30px" hidden>
+                <a class="down" href="{{ location }}" download  style="margin-top:50px; text-decoration: none; border: 1px black solid; border-radius: 10px; padding: 10px 15px 10px 15px; color: black">Download</a>
             </div>
+        </form>
     </div>
     <script>
         var titleName = document.getElementById('titleName').innerText;
@@ -46,13 +47,15 @@
 
         if (titleName.length != 0){
             console.log(titleName.length)
-            document.getElementById('download').disabled = false;
+            document.getElementById('download').hidden = false;
             console.log(titleName)
         }else{
             console.log('Else is Running')
-            document.getElementById('download').disabled = true
+            document.getElementById('download').hidden = false
         };
-
+        function home(){
+        window.location.href = '/'
+};
     </script>
 </body>
 </html>

@@ -56,3 +56,11 @@ form {
     width: 50px;
 
 }
+
+.down:hover {
+    transition-duration: 0.15s;
+    background-color: lightgrey;
+    color: black;
+    box-shadow: darkgrey 5px 5px 0px 0px;
+
+}
