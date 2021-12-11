@@ -19,21 +19,40 @@
         </div>
     </div>
     <div class="main">
-        <form method="get">
             <div>
                 <h3>Enter Your Video Link</h3>
             </div>
             <div>
-                <input type="text" id="link" class="link">
-                <button id="verify" class="verify">Verify</button>
+                <form class="verifFyorm" method="post" style="flex-direction: row;">
+                    {% csrf_token %}
+                    <input type="text" id="link" class="link" name="link">
+                    <button id="verify" class="verify" type="submit">Verify</button>
+                </form>
             </div>
             <div>
-                <p id="titleName"></p>
+                <p id="titleName" name="titleName" >{{ videoName }}</p>
+
             </div>
             <div>
-                <button class="downloadButton" type="submit" disabled>Downlader</button>
+                <button id="download" class="downloadButton" type="submit" disabled>Download</button>
             </div>
-        </form>
     </div>
+    <script>
+        var titleName = document.getElementById('titleName').innerText;
+        var download = document.getElementById('download');
+        console.log(titleName);
+        console.log(titleName.length)
+
+
+        if (titleName.length != 0){
+            console.log(titleName.length)
+            document.getElementById('download').disabled = false;
+            console.log(titleName)
+        }else{
+            console.log('Else is Running')
+            document.getElementById('download').disabled = true
+        };
+
+    </script>
 </body>
 </html>
