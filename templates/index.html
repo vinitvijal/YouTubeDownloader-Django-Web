@@ -19,9 +19,7 @@
         </div>
     </div>
     <div class="main">
-            <div>
-                <h3>YouTube URL Video Link</h3>
-            </div>
+
             <div>
                 <form class="verifyForm" method="POST" style="flex-direction: row;">
                     {% csrf_token %}
@@ -40,7 +38,7 @@
 
             <div id="download" class="download">
                 <div style="display: flex; justify-content: center; align-items: center; flex-direction: column">
-                    <img src="{{ thumbnail }}" width="400px">
+                    <img src="{{ thumbnail }}" width="480px" height="270px" style="margin-top: 20px">
                     <a class="down" href="{{ location }}" download  style="margin-top:50px; text-decoration: none; border: 1px black solid; border-radius: 10px; padding: 10px 15px 10px 15px; color: black">Download</a>
                 </div>
             </div>
