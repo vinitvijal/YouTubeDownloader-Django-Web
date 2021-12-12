@@ -54,10 +54,9 @@ def index(request):
             elif 'audioMP3' in request.POST:
                 location = audioStream
             context = {
-                'Disclamer': "Your Video Length is More Than 20 Min",
+                'Disclamer': "Hii",
                 "videoName": videoName,
                 'location': location,
-                "thumbnail": thumbnail
             }
             return render(request, 'index.html', context)
 
@@ -76,5 +75,5 @@ def clean(folder='audio'):
     # Create Folders
     os.mkdir(path)
 
-    return print("Done")
+    print("Media Data is Cleared!!!!")
 

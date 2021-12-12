@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Downloader - Vinu Code.</title>
+    <title>YouTube Video Converter - Vinu Code.</title>
 {#    <link rel="shortcut icon" type="image/png href="{% static 'img/favicon.png' %}" />#}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600&family=PT+Serif:wght@700&display=swap" rel="stylesheet">
 </head>
-
 <body>
+
     <div class="header">
         <div onclick="home()" style="cursor: pointer">
-            <span style="color: white;"><span style="color:forestgreen;">You</span>Tube Downloader - <span style="font-size: medium;">Vinu Code.</span></span>
+            <span style="color: white;"><span style="color:forestgreen;">You</span>Tube Video Converter - <span style="font-size: medium;">Vinu Code.</span></span>
         </div>
     </div>
     <div class="main">
@@ -24,22 +24,25 @@
             <div>
                 <form class="verifyForm" method="POST" style="flex-direction: row;">
                     {% csrf_token %}
-                    <input type="text" id="link" class="link" name="link" placeholder="Paste Link Here : ">
+                    <input type="text" id="link" class="link" name="link" placeholder="  Paste Link Here : " style="height: 50px;border-radius: 10px; border: black 1px solid;">
                     <button name="videoMP4" id="verify" class="verify" type="submit" style="margin-left: 2%">Video</button>
                     <button name="audioMP3" id="verify" class="verify" type="submit" style="margin-left: 2%;">Audio</button>
 
 
             </div>
             <div style="margin-top: 10px; display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 5px;">
-                <h4 style="margin-bottom: 5px; text-decoration: black; ">{{ Disclamer }}</h4>
+                <h4 id="Disc" style="margin-bottom: 5px; text-decoration: black; " hidden>{{ Disclamer }}</h4>
                 <p id="titleName" name="titleName" >{{ videoName }}</p>
             </div>
 
 
             <div id="download" class="download">
                 <div style="display: flex; justify-content: center; align-items: center; flex-direction: column">
-                    <img src="{{ thumbnail }}" width="480px" height="270px" style="margin-top: 20px; margin-bottom: 10px;">
-                    <a class="down" href="{{ location }}" download  style="margin-top:50px; text-decoration: none; border: 1px black solid; border-radius: 10px; padding: 10px 15px 10px 15px; color: black">Download</a>
+                    <img id="thumbNail" src="{{ thumbnail }}" width="480px" height="270px" style="margin-top: 20px; margin-bottom: 10px;">
+                    <video id="videoPlayer" controls=""  name="media" width="400px" height="300px" hidden>
+                        <source src='{{ location }}' type="video/mp4">
+                    </video>
+                    <a class="down" id="down" href="{{ location }}" download  style="margin-top:50px; text-decoration: none; border: 1px black solid; border-radius: 10px; padding: 10px 15px 10px 15px; color: black" hidden>Download</a>
                 </div>
             </div>
         </form>
@@ -47,6 +50,7 @@
     <script>
         var titleName = document.getElementById('titleName').innerText;
         var download = document.getElementById('download');
+        var Disc = document.getElementById('Disc').innerText;
         console.log(titleName);
         console.log(titleName.length)
 
@@ -60,14 +64,32 @@
             document.querySelector('#download').hidden = true
         };
 
+        if (Disc.length != 0){
+            document.querySelector('#thumbNail').hidden = true;
+            document.querySelector('#videoPlayer').hidden = false;
+            document.querySelector('#down').hidden = true;
+
+        }else{
+            document.querySelector('#thumbNail').hidden = false;
+            document.querySelector('#videoPlayer').hidden = true;
+            document.querySelector('#down').hidden = false;
+
+
+        }
+
+
         function home(){
         window.location.href = '/'
 };
+
     </script>
 </body>
-<footer style="display: flex; justify-content: center; align-items: baseline;">
+<footer style="display: flex; justify-content: center; align-items: center; flex-direction: column">
     <div>
-        Version : 0.0.4
+        <h4> Version : 0.0.4 </h4>
+    </div>
+    <div>
+        <h4>(Contact)  Instagram  :  <a href="https://www.instagram.com/its.vinit_vijal__/" style="text-decoration: none; color: darkblue;">Vinit Vijal</a></h4>
     </div>
 </footer>
 </html>
