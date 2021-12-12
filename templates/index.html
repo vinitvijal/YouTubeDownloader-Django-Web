@@ -9,24 +9,26 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600&family=PT+Serif:wght@700&display=swap" rel="stylesheet">
 
 </head>
 <body>
     <div class="header">
         <div onclick="home()" style="cursor: pointer">
-            <span style="color: white;"><span style="color: rgb(255, 102, 0);">You</span>Tube Downloader - <span style="font-size: medium;">Vinu Code.</span></span>
+            <span style="color: white;"><span style="color:forestgreen;">You</span>Tube Downloader - <span style="font-size: medium;">Vinu Code.</span></span>
         </div>
     </div>
     <div class="main">
             <div>
-                <h3>Enter Your Video Link</h3>
+                <h3>YouTube URL Video Link</h3>
             </div>
             <div>
-                <form class="verifFyorm" method="POST" style="flex-direction: row;">
+                <form class="verifyForm" method="POST" style="flex-direction: row;">
                     {% csrf_token %}
                     <input type="text" id="link" class="link" name="link">
-                    <button name="verify" id="verify" class="verify" type="submit">Verify</button>
+                    <button name="videoMP4" id="verify" class="verify" type="submit" style="margin-left: 2%">Video</button>
+                    <button name="audioMP3" id="verify" class="verify" type="submit" style="margin-left: 2%;">Audio</button>
+
 
             </div>
             <div style="margin-top: 10px">
@@ -51,7 +53,7 @@
             console.log(titleName)
         }else{
             console.log('Else is Running')
-            document.getElementById('download').hidden = false
+            document.getElementById('download').hidden = true
         };
         function home(){
         window.location.href = '/'
