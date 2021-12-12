@@ -64,3 +64,11 @@ form {
     box-shadow: darkgrey 5px 5px 0px 0px;
 
 }
+
+.download {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
