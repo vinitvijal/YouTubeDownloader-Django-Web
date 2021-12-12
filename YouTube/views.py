@@ -11,24 +11,26 @@ def index(request):
         fileName = (videoName.replace(' ' ,'_')).replace('|','-')
         print(videoName)
         print()
+        thumbnail = yt.thumbnail_url
         stream = yt.streams.filter(type='audio')
         for i in stream:
             print(i, end='\n\n')
         if 'videoMP4' in request.POST:
             video = yt.streams.get_highest_resolution()
-            location = '/media/videos/' + fileName + '.mp4'
-            video.download(output_path='media/videos/', filename=(fileName + '.mp4'))
+            location = '/media/videos/' + fileName + '(CodeVinu).mp4'
+            video.download(output_path='media/videos/', filename=(fileName + '(CodeVinu).mp4'))
 
         elif 'audioMP3' in request.POST:
             audio = yt.streams.get_audio_only()
-            location = '/media/audio/' + fileName + '.mp3'
-            audio.download(output_path='media/audio/', filename=(fileName + '.mp3'))
+            location = '/media/audio/' + fileName + '(CodeVinu).mp3'
+            audio.download(output_path='media/audio/', filename=(fileName + '(CodeVinu).mp3'))
         else:
             index(request)
 
         context = {
             'videoName': videoName,
-            'location': location
+            'location': location,
+            "thumbnail": thumbnail
         }
         return render(request, 'index.html', context)
 

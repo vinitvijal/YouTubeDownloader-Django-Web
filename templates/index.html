@@ -25,17 +25,21 @@
             <div>
                 <form class="verifyForm" method="POST" style="flex-direction: row;">
                     {% csrf_token %}
-                    <input type="text" id="link" class="link" name="link">
+                    <input type="text" id="link" class="link" name="link" placeholder="Paste Link Here : ">
                     <button name="videoMP4" id="verify" class="verify" type="submit" style="margin-left: 2%">Video</button>
                     <button name="audioMP3" id="verify" class="verify" type="submit" style="margin-left: 2%;">Audio</button>
 
 
             </div>
             <div style="margin-top: 10px">
+
                 <p id="titleName" name="titleName" >{{ videoName }}</p>
 
             </div>
-            <div id="download" style="margin-top: 30px" hidden>
+
+
+            <div id="download" style="margin-top: 30px;display: flex; justify-content: center; align-items: center; flex-direction: column" hidden >
+                <img src="{{ thumbnail }}" width="100px" >
                 <a class="down" href="{{ location }}" download  style="margin-top:50px; text-decoration: none; border: 1px black solid; border-radius: 10px; padding: 10px 15px 10px 15px; color: black">Download</a>
             </div>
         </form>
@@ -60,4 +64,9 @@
 };
     </script>
 </body>
+<footer style="display: flex; justify-content: center; align-items: center;">
+    <div>
+        version : 1
+    </div>
+</footer>
 </html>
