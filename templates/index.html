@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Video Converter - Vinu Code.</title>
+    <title>YouMp4 - Vinu Code.</title>
 {#    <link rel="shortcut icon" type="image/png href="{% static 'img/favicon.png' %}" />#}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
 
     <div class="header">
         <div onclick="home()" style="cursor: pointer">
-            <span style="color: white;"><span style="color:forestgreen;">You</span>Tube Video Converter - <span style="font-size: medium;">Vinu Code.</span></span>
+            <span class="headText" ><span style="color:forestgreen;">You</span>Tube Video Converter - <span style="font-size: medium;">Vinu Code.</span></span>
         </div>
     </div>
     <div class="main">
@@ -24,7 +24,7 @@
             <div>
                 <form class="verifyForm" method="POST" style="flex-direction: row;">
                     {% csrf_token %}
-                    <input type="text" id="link" class="link" name="link" placeholder="  Paste Link Here : " style="height: 50px;border-radius: 10px; border: black 1px solid;">
+                    <input type="text" id="link" class="link" name="link" placeholder="  Paste Link Here : " >
                     <button name="videoMP4" id="verify" class="verify" type="submit" style="margin-left: 2%">Video</button>
                     <button name="audioMP3" id="verify" class="verify" type="submit" style="margin-left: 2%;">Audio</button>
 
@@ -42,7 +42,7 @@
                     <video id="videoPlayer" controls=""  name="media" width="400px" height="300px" hidden>
                         <source src='{{ location }}' type="video/mp4">
                     </video>
-                    <a class="down" id="down" href="{{ location }}" download  style="margin-top:50px; text-decoration: none; border: 1px black solid; border-radius: 10px; padding: 10px 15px 10px 15px; color: black" hidden>Download</a>
+                    <a class="down" id="down" href="{{ location }}" download  style="margin-top:50px; text-decoration: none; border: 1px black solid; border-radius: 10px; padding: 10px 15px 10px 15px; color: black" hidden>Download {{ type }}</a>
                 </div>
             </div>
         </form>
@@ -83,7 +83,7 @@
 </body>
 <footer style="display: flex; justify-content: center; align-items: center; flex-direction: column">
     <div>
-        <h4> Version : 0.0.4 </h4>
+        <h4> Version : 0.0.8 </h4>
     </div>
     <div>
         <h4>(Contact)  Instagram  :  <a href="https://www.instagram.com/its.vinit_vijal__/" style="text-decoration: none; color: darkblue;">Vinit Vijal</a></h4>

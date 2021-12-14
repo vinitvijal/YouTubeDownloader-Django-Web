@@ -3,6 +3,11 @@
     padding: 0;
 }
 
+
+.headText {
+    color: whitesmoke;
+}
+
 .header {
     font-family: 'Baloo Bhaijaan 2';
     width: 100%;
@@ -39,6 +44,8 @@ form {
 .link {
     height: 45px;
     width: 50vw;
+    border-radius: 10px;
+    border: black 1px solid;
 }
 
 .downloadButton {
@@ -56,6 +63,9 @@ form {
     width: 50px;
 
 }
+.headText {
+    color: white;
+}
 
 .down:hover {
     transition-duration: 0.15s;
@@ -63,5 +73,42 @@ form {
     color: black;
     box-shadow: darkgrey 5px 5px 0px 0px;
 
+}
+
+
+
+@media screen and (max-width: 600px) {
+    .header {
+        height: 8vh;
+    }
+    .headText {
+        color:antiquewhite;
+        font-size: medium;
+    }
+    .link {
+        height: 20px;
+
+    }
+    #titleName {
+        margin-top:20px;
+        width: 80vw;
+
+    }
+    #videoPlayer {
+        width: 90%;
+
+    }
+    #thumbNail {
+        height:auto;
+        width: 90vw;
+
+    }
+    .main{
+        margin-top:8vh;
+    }
+
+    footer {
+        margin-top: 30px
+    }
 }
 
