@@ -30,16 +30,19 @@ def index(request):
                 video = yt.streams.get_highest_resolution()
                 location = '/media/videos/' + fileName + '(CodeVinu).mp4'
                 video.download(output_path='media/videos/', filename=(fileName + '(CodeVinu).mp4'))
+                type = 'Video'
 
             elif 'audioMP3' in request.POST:
                 clean('audio')
                 audio = yt.streams.get_audio_only()
                 location = '/media/audio/' + fileName + '(CodeVinu).mp3'
                 audio.download(output_path='media/audio/', filename=(fileName + '(CodeVinu).mp3'))
+                type = 'Audio'
             else:
                 index(request)
 
             context = {
+                'type': type,
                 'videoName': videoName,
                 'location': location,
                 "thumbnail": thumbnail
