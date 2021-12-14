@@ -16,8 +16,7 @@ def index(request):
         print("audio = \n", audioStream, '\n\n')
         videoStream = yt.streams.filter(progressive='true')[-1].url
         print("video = \n", videoStream, '\n\n')
-
-        fileName = (videoName.replace(' ' ,'_')).replace('|','-')
+        fileName = nameConverter(videoName)
         print(videoName)
         print()
         thumbnail = yt.thumbnail_url
@@ -77,3 +76,19 @@ def clean(folder='audio'):
 
     print("Media Data is Cleared!!!!")
 
+def nameConverter(title):
+    a = title
+    z = []
+
+    for i in a:
+        if i.isalnum():
+            z.append(i)
+        elif i == " ":
+            z.append('_')
+        elif i == "|":
+            z.append('-')
+        else:
+            z.append('_')
+
+    newTitle = ''.join(z)
+    return newTitle
