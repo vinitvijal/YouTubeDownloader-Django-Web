@@ -2,6 +2,7 @@ from django.shortcuts import render
 from pytube import YouTube
 import os
 import shutil
+import json
 
 # Create your views here.
 def index(request):
@@ -20,32 +21,92 @@ def index(request):
         print(videoName)
         print()
         thumbnail = yt.thumbnail_url
-        stream = yt.streams.filter(type='video')
+        stream = yt.streams.filter(type='video',progressive='True')
         for i in stream:
             print(i, end='\n\n')
 
         if length <= 1200:
             if 'videoMP4' in request.POST:
-                clean('videos')
-                video = yt.streams.get_highest_resolution()
-                location = '/media/videos/' + fileName + '(CodeVinu).mp4'
-                video.download(output_path='media/videos/', filename=(fileName + '(CodeVinu).mp4'))
+                videoList = yt.streams.filter(type='video',progressive='True')
+                quality = []
+                for i in videoList:
+                    quality.append(i.resolution)
+                number = len(quality)
+                print(quality)
+                qualityList = json.dumps(quality)
+                print(qualityList)
+                location = "/"
                 type = 'Video'
+                avail = 'No'
+
+
 
             elif 'audioMP3' in request.POST:
+                audioList = yt.streams.filter(type='video',progressive='True', mime_type='video/mp4')
+                quality = []
+                for i in audioList:
+                    quality.append(i.abr)
+                number = len(quality)
+                print(quality)
+                qualityList = json.dumps(quality)
+                print(qualityList)
                 clean('audio')
                 audio = yt.streams.get_audio_only()
                 location = '/media/audio/' + fileName + '(CodeVinu).mp3'
                 audio.download(output_path='media/audio/', filename=(fileName + '(CodeVinu).mp3'))
                 type = 'Audio'
+                avail = 'No'
+
+
+            elif 'qualitySelected' in request.POST:
+                type = request.POST.get('type')
+                quality = []
+                if type == "Video":
+                    List = yt.streams.filter(type='video',progressive='True')
+                    for i in List:
+                        quality.append(i.resolution)
+                elif type == 'Audio':
+                    List = yt.streams.filter(type='audio')
+                    for i in List:
+                        quality.append(i.abr)
+                number = len(quality)
+                qualityList = json.dumps(quality)
+                print(qualityList)
+                AudioQuality = request.POST.get('audioQuality')
+                VideoQuality = request.POST.get('videoQuality')
+                clean('videos')
+                if AudioQuality == None:
+                    Qual = VideoQuality
+                    print(Qual)
+                    type = 'Video'
+                    video = yt.streams.get_by_resolution(Qual)
+                    location = '/media/videos/' + fileName + '(CodeVinu).mp4'
+                    video.download(output_path='media/videos/', filename=(fileName + '(CodeVinu).mp4'))
+                elif VideoQuality == None:
+                    Qual = AudioQuality
+                    print(Qual)
+                    type = 'Video'
+                    audio = yt.streams.filter(abr=Qual)[0]
+                    location = '/media/audio/' + fileName + '(CodeVinu).mp3'
+                    audio.download(output_path='media/audio/', filename=(fileName + '(CodeVinu).mp3'))
+                avail = 'Yes'
+
+
+
+
+            
             else:
                 index(request)
 
             context = {
+                'link': name,
                 'type': type,
                 'videoName': videoName,
                 'location': location,
-                "thumbnail": thumbnail
+                "thumbnail": thumbnail,
+                'qualityList': qualityList,
+                'qualityNum': number,
+                'downloadAvail':avail
             }
             return render(request, 'index.html', context)
         else:
