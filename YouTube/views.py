@@ -76,6 +76,9 @@ def clean(folder='audio'):
     shutil.rmtree(path)
     # Create Folders
     os.mkdir(path)
+    f = open(path + '/keep.txt','w')
+    f.write('Example File')
+    f.close()
 
     print("Media Data is Cleared!!!!")
 
