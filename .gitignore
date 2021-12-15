@@ -1,12 +1,8 @@
-*.log
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*$py.class
+*/__pycache__/*
 
-*.pot
 
-*.pyc
-
-*/*/*/__pycache__/
-
-*/*/__pycache__/
-
-*/__pycache__/
-
+# C extensions
+*.so
