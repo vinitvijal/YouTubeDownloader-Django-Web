@@ -6,25 +6,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouMp4 - Vinu Code.</title>
-    <link rel="icon"href="{% static 'favicon.ico' %}">
+    <link rel="icon"href="{% static 'favicon.ico' %}">    
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600&family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
 </head>
 <body>
 
     <div class="header">
         <div onclick="home()" style="cursor: pointer">
-            <span class="headText" ><span style="color:forestgreen;">You</span>Tube Video Converter - <span style="font-size: medium;">Vinu Code.</span></span>
+            <span class="headText" ><span style="color:rgb(169, 216, 169);">You</span>Tube Video Converter - <span style="font-size: medium;">Vinu Code.</span></span>
         </div>
     </div>
     <div class="main">
+        <p name="linkadd" hidden>{{ link }}</p>
+        <p id="qualityNum" hidden>{{ qualityNum }}</p>
+        <p id="filetype" value="{{ type }}" hidden>{{ type }}</p>
+        <h6 id="downloadAvail" hidden>{{ downloadAvail }}</h6>
+        <h6 name="qualFromHTML" id="qualFromHTML" hidden>{{ qualityList }}</h6>
 
             <div>
                 <form class="verifyForm" method="POST" style="flex-direction: row;">
                     {% csrf_token %}
-                    <input type="text" id="link" class="link" name="link" placeholder="  Paste Link Here : " >
+                    <input type="text" id="link" class="link" name="link" placeholder="  Paste Link Here : " value="{{ link }}" >
                     <button name="videoMP4" id="verify" class="verify" type="submit" style="margin-left: 2%">Video</button>
                     <button name="audioMP3" id="verify" class="verify" type="submit" style="margin-left: 2%;">Audio</button>
 
@@ -38,11 +49,35 @@
 
             <div id="download" class="download">
                 <div style="display: flex; justify-content: center; align-items: center; flex-direction: column">
-                    <img id="thumbNail" src="{{ thumbnail }}" width="480px" height="270px" style="margin-top: 20px; margin-bottom: 10px;">
+                    <img id="thumbNail" src="{{ thumbnail }}" width="480px" height="270px" style="margin-top: 20px; margin-bottom: 10px;" hidden>
                     <video id="videoPlayer" controls=""  name="media" width="400px" height="300px" hidden>
                         <source src='{{ location }}' type="video/mp4">
                     </video>
-                    <a class="down" id="down" href="{{ location }}" download  style="margin-top:50px; text-decoration: none; border: 1px black solid; border-radius: 10px; padding: 10px 15px 10px 15px; color: black" hidden>Download {{ type }}</a>
+                <form method="post">
+                    <div id="qualitySelection" hidden>
+                        <select name="videoQuality" id="videoQuality" >
+                            <option value="" disabled selected>Select Video Quality...</option>
+                            <option id="144p" value="144p" hidden>~ 144p Video</option>
+                            <option id="360p" value="360p" hidden>~ 360p Video</option>
+                            <option id="480p" value="480p" hidden>~ 480p Video</option>
+                            <option id='720p' value="720p" hidden>~ 720p Video</option>
+                            <option id="1080p" value="1080p" hidden>~ 1080p Video</option>
+                            <option id="2160p" value="2160p" hidden>~ 2k Video</option>
+                            <option id="4320p" value="4320p" hidden>~ 4k Video</option>
+                        </select>
+                        <select name="audioQuality" id="audioQuality" hidden >
+                            <option value="" disabled selected>Select Audio Quality...</option>
+                            <option id="24kbps" value="24kbps" hidden>~ 24kbps Audio</option>
+                            <option id="48kbps" value="48kbps" hidden>~ 48kbps Audio</option>
+                            <option id="96kbps" value="96kbps" hidden>~ 96kbps Audio</option>
+                            <option id="128kbps" value="128kbps" hidden>~ 128kbps Audio</option>
+                            <option id="160kbps" value="160kbps" hidden>~ 160kbps Audio</option>
+                            <option id="192kbps" value="192kbps" hidden>~ 192kbps Audio</option>
+                        </select>
+                        <button name="qualitySelected" type="submit">Verify</button>
+                    </div>
+                </form>
+                    <a class="down" id="down" onclick="upload()" href="{{ location }}" download  style="margin-top:50px; text-decoration: none; border: 1px black solid; border-radius: 10px; padding: 10px 15px 10px 15px; color: black" hidden>Download {{ type }}</a>
                 </div>
             </div>
         </form>
@@ -51,8 +86,30 @@
         var titleName = document.getElementById('titleName').innerText;
         var download = document.getElementById('download');
         var Disc = document.getElementById('Disc').innerText;
+        var qualityNum = document.getElementById('qualityNum').innerText;
+        var type = document.getElementById('filetype').innerText;
+        var downAvail = document.getElementById('downloadAvail').innerText;
+        var qualityList = {{qualityList|safe}}
         console.log(titleName);
         console.log(titleName.length)
+
+
+        if (qualityNum.length != 0){
+            console.log(qualityList)
+        };
+
+
+        if (type == "Video"){
+            document.querySelector('#qualitySelection').hidden = false;
+            document.querySelector('#videoQuality').hidden = false;
+            document.querySelector('#audioQuality').hidden = true;
+        }else if (type == 'Audio'){
+            document.querySelector('#qualitySelection').hidden = false;
+            document.querySelector('#videoQuality').hidden = true;
+            document.querySelector('#audioQuality').hidden = false;
+        }
+        console.log(downAvail);
+    
 
 
         if (titleName.length != 0){
@@ -61,7 +118,7 @@
             console.log(titleName)
         }else{
             console.log('Else is Running')
-            document.querySelector('#download').hidden = true
+            document.querySelector('#download').hidden = true;
         };
 
         if (Disc.length != 0){
@@ -73,43 +130,74 @@
             document.querySelector('#thumbNail').hidden = false;
             document.querySelector('#videoPlayer').hidden = true;
             document.querySelector('#down').hidden = false;
+        };
+        if (downAvail == 'Yes'){
+            document.querySelector('#down').hidden = false;
+        }else if(downAvail == 'No'){
+            document.querySelector('#down').hidden = true;
+
+        }else{
+            document.querySelector('#down').hidden = true;
         }
+
+        for (let i in qualityList){
+            document.getElementById(qualityList[i]).hidden = false
+        }
+        document.getElementById('144p').hidden = true
 
         function home(){
         window.location.href = '/'
 };
 
     </script>
-     <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-      
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-          apiKey: "AIzaSyDCjgFO78_6ZnSx2iFDGwp6xJYJqJkKrfM",
-          authDomain: "yoump4-c0836.firebaseapp.com",
-          projectId: "yoump4-c0836",
-          storageBucket: "yoump4-c0836.appspot.com",
-          messagingSenderId: "102025580963",
-          appId: "1:102025580963:web:0a8b9785a415fe5554ca16",
-          measurementId: "G-MESZNM2B1K"
+    <script>
+        
+        var config = {
+            apiKey: "AIzaSyDCjgFO78_6ZnSx2iFDGwp6xJYJqJkKrfM",
+            authDomain: "yoump4-c0836.firebaseapp.com",
+            databaseURL: "https://yoump4-c0836-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "yoump4-c0836",
+            storageBucket: "yoump4-c0836.appspot.com",
+            messagingSenderId: "102025580963",
+            appId: "1:102025580963:web:0a8b9785a415fe5554ca16",
+            measurementId: "G-MESZNM2B1K"
         };
-      
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
+            firebase.initializeApp(config);
+            firebase.analytics();
+            var db = firebase.firestore();
+
+            function upload(){
+                var filetype = "{{ type }}";
+                var link = "{{ link }}";
+                var name = "{{ videoName }}";
+                db.collection("YouMP4Downloads").add({
+                    FileType: type,
+                    Link: link,
+                    Name: name,
+                    Time: firebase.firestore.Timestamp.fromDate(new Date())
+                })
+                .then((docRef) => {
+                    console.log("Document written with ID: ", docRef.id);
+                    })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                });
+
+                console.log('Done Upload')
+            };
+
+
       </script>
-</body>
+    
+    
 <footer style="display: flex; justify-content: center; align-items: center; flex-direction: column">
     <div>
-        <h4> Version : 0.1.0 </h4>
+        <h4> Version : 0.2.2b </h4>
     </div>
     <div>
         <h4>(Contact)  Instagram  :  <a href="https://www.instagram.com/its.vinit_vijal__/" style="text-decoration: none; color: darkblue;">Vinit Vijal</a></h4>
     </div>
 </footer>
+    
+</body>
 </html>
