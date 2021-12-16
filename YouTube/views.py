@@ -21,9 +21,7 @@ def index(request):
         print(videoName)
         print()
         thumbnail = yt.thumbnail_url
-        stream = yt.streams.filter(type='video',progressive='True')
-        for i in stream:
-            print(i, end='\n\n')
+    
 
         if length <= 1200:
             if 'videoMP4' in request.POST:
@@ -35,6 +33,7 @@ def index(request):
                 print(quality)
                 qualityList = json.dumps(quality)
                 print(qualityList)
+                clean('videos')
                 location = "/"
                 type = 'Video'
                 avail = 'No'
@@ -53,7 +52,6 @@ def index(request):
                 clean('audio')
                 audio = yt.streams.get_audio_only()
                 location = '/media/audio/' + fileName + '(CodeVinu).mp3'
-                audio.download(output_path='media/audio/', filename=(fileName + '(CodeVinu).mp3'))
                 type = 'Audio'
                 avail = 'No'
 
@@ -75,14 +73,14 @@ def index(request):
                 AudioQuality = request.POST.get('audioQuality')
                 VideoQuality = request.POST.get('videoQuality')
                 clean('videos')
-                if AudioQuality == None:
+                if AudioQuality == None and VideoQuality != None:
                     Qual = VideoQuality
                     print(Qual)
                     type = 'Video'
                     video = yt.streams.get_by_resolution(Qual)
                     location = '/media/videos/' + fileName + '(CodeVinu).mp4'
                     video.download(output_path='media/videos/', filename=(fileName + '(CodeVinu).mp4'))
-                elif VideoQuality == None:
+                elif VideoQuality == None and AudioQuality != None:
                     Qual = AudioQuality
                     print(Qual)
                     type = 'Video'
@@ -137,6 +135,10 @@ def clean(folder='audio'):
     shutil.rmtree(path)
     # Create Folders
     os.mkdir(path)
+    file = open(path + '/extra.txt', 'w')
+    file.write('Hii File')
+    file.close()
+    
 
     print("Media Data is Cleared!!!!")
 
