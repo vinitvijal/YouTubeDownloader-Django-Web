@@ -10,7 +10,13 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600&family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
 </head>
 <body>
 
@@ -71,7 +77,7 @@
                         <button name="qualitySelected" type="submit">Verify</button>
                     </div>
                 </form>
-                    <a class="down" id="down" href="{{ location }}" download  style="margin-top:50px; text-decoration: none; border: 1px black solid; border-radius: 10px; padding: 10px 15px 10px 15px; color: black" hidden>Download {{ type }}</a>
+                    <a class="down" id="down" onclick="upload()" href="{{ location }}" download  style="margin-top:50px; text-decoration: none; border: 1px black solid; border-radius: 10px; padding: 10px 15px 10px 15px; color: black" hidden>Download {{ type }}</a>
                 </div>
             </div>
         </form>
@@ -144,30 +150,46 @@
 };
 
     </script>
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-      
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-          apiKey: "AIzaSyDCjgFO78_6ZnSx2iFDGwp6xJYJqJkKrfM",
-          authDomain: "yoump4-c0836.firebaseapp.com",
-          projectId: "yoump4-c0836",
-          storageBucket: "yoump4-c0836.appspot.com",
-          messagingSenderId: "102025580963",
-          appId: "1:102025580963:web:0a8b9785a415fe5554ca16",
-          measurementId: "G-MESZNM2B1K"
+    <script>
+        
+        var config = {
+            apiKey: "AIzaSyDCjgFO78_6ZnSx2iFDGwp6xJYJqJkKrfM",
+            authDomain: "yoump4-c0836.firebaseapp.com",
+            databaseURL: "https://yoump4-c0836-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "yoump4-c0836",
+            storageBucket: "yoump4-c0836.appspot.com",
+            messagingSenderId: "102025580963",
+            appId: "1:102025580963:web:0a8b9785a415fe5554ca16",
+            measurementId: "G-MESZNM2B1K"
         };
-      
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
+            firebase.initializeApp(config);
+            firebase.analytics();
+            var db = firebase.firestore();
+
+            function upload(){
+                var filetype = "{{ type }}";
+                var link = "{{ link }}";
+                var name = "{{ videoName }}";
+                db.collection("YouMP4Downloads").add({
+                    FileType: type,
+                    Link: link,
+                    Name: name,
+                    Time: firebase.firestore.Timestamp.fromDate(new Date())
+                })
+                .then((docRef) => {
+                    console.log("Document written with ID: ", docRef.id);
+                    })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                });
+
+                console.log('Done Upload')
+            };
+
+
       </script>
-</body>
+    
+    
 <footer style="display: flex; justify-content: center; align-items: center; flex-direction: column">
     <div>
         <h4> Version : 0.2.2b </h4>
@@ -176,4 +198,6 @@
         <h4>(Contact)  Instagram  :  <a href="https://www.instagram.com/its.vinit_vijal__/" style="text-decoration: none; color: darkblue;">Vinit Vijal</a></h4>
     </div>
 </footer>
+    
+</body>
 </html>
