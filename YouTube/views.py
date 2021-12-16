@@ -59,7 +59,7 @@ def index(request):
 
 
             elif 'qualitySelected' in request.POST:
-                type = request.POST.get('type')
+                type = request.POST.get('filetype')
                 quality = []
                 if type == "Video":
                     List = yt.streams.filter(type='video',progressive='True')
