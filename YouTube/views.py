@@ -20,7 +20,7 @@ def index(request):
         print(videoName)
         print()
         thumbnail = yt.thumbnail_url
-        stream = yt.streams.filter(type='video')
+        stream = yt.streams.filter(type='audio')
         for i in stream:
             print(i, end='\n\n')
 
