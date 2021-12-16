@@ -19,9 +19,18 @@ from YouTube import views
 from django.conf.urls import url
 from django.conf import settings
 from django.views.static import serve
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.urls import include, path
+from django.views.generic.base import RedirectView
+from django.conf import settings
+
 
 
 urlpatterns = [
+    path(
+        "favicon.ico",
+        RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),
+    ),
     path('admin/', admin.site.urls),
     path('', views.index),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
