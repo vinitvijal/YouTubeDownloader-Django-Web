@@ -78,15 +78,15 @@ def index(request):
                     print(Qual)
                     type = 'Video'
                     video = yt.streams.get_by_resolution(Qual)
-                    location = '/media/videos/' + fileName + '(CodeVinu).mp4'
-                    video.download(output_path='media/videos/', filename=(fileName + '(CodeVinu).mp4'))
+                    location = '/media/videos/' + fileName + '-' + Qual + '-(CodeVinu).mp4'
+                    video.download(output_path='media/videos/', filename=(fileName + '-' + Qual + '-(CodeVinu).mp4'))
                 elif VideoQuality == None and AudioQuality != None:
                     Qual = AudioQuality
                     print(Qual)
                     type = 'Audio'
                     audio = yt.streams.filter(abr=Qual)[0]
-                    location = '/media/audio/' + fileName + '(CodeVinu).mp3'
-                    audio.download(output_path='media/audio/', filename=(fileName + '(CodeVinu).mp3'))
+                    location = '/media/audio/' + fileName + '-' + Qual + '-(CodeVinu).mp3'
+                    audio.download(output_path='media/audio/', filename=(fileName + '-' + Qual + '-(CodeVinu).mp3'))
                 avail = 'Yes'
 
 

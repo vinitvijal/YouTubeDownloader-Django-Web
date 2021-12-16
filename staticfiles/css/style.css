@@ -4,6 +4,10 @@
 }
 
 
+#thumbNail {
+    border-radius: 20px;
+}
+
 .headText {
     color: whitesmoke;
 }
@@ -117,6 +121,7 @@ button {
     #thumbNail {
         height:auto;
         width: 90vw;
+        
 
     }
     .main{
