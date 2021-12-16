@@ -42,7 +42,7 @@ def index(request):
 
 
             elif 'audioMP3' in request.POST:
-                audioList = yt.streams.filter(type='video',progressive='True', mime_type='video/mp4')
+                audioList = yt.streams.filter(type='audio', mime_type='audio/mp4')
                 quality = []
                 for i in audioList:
                     quality.append(i.abr)
@@ -66,7 +66,7 @@ def index(request):
                     for i in List:
                         quality.append(i.resolution)
                 elif type == 'Audio':
-                    List = yt.streams.filter(type='audio')
+                    List = yt.streams.filter(type='audio', mime_type='audio/mp4')
                     for i in List:
                         quality.append(i.abr)
                 number = len(quality)

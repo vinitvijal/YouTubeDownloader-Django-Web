@@ -16,7 +16,7 @@
 
     <div class="header">
         <div onclick="home()" style="cursor: pointer">
-            <span class="headText" ><span style="color:forestgreen;">You</span>Tube Video Converter - <span style="font-size: medium;">Vinu Code.</span></span>
+            <span class="headText" ><span style="color:rgb(169, 216, 169);">You</span>Tube Video Converter - <span style="font-size: medium;">Vinu Code.</span></span>
         </div>
     </div>
     <div class="main">
@@ -24,6 +24,7 @@
         <p id="qualityNum" hidden>{{ qualityNum }}</p>
         <p id="filetype" hidden>{{ type }}</p>
         <h6 id="downloadAvail" hidden>{{ downloadAvail }}</h6>
+        <h6 name="qualFromHTML" id="qualFromHTML" hidden>{{ qualityList }}</h6>
 
             <div>
                 <form class="verifyForm" method="POST" style="flex-direction: row;">
@@ -50,13 +51,13 @@
                     <div id="qualitySelection" hidden>
                         <select name="videoQuality" id="videoQuality" >
                             <option value="" disabled selected>Select Video Quality...</option>
-                            <option id="144p" value="144p" hidden>144p Video</option>
-                            <option id="360p" value="360p" hidden>360p Video</option>
-                            <option id="480p" value="480p" hidden>480p Video</option>
-                            <option id='720p' value="720p" hidden>720p Video</option>
-                            <option id="1080p" value="1080p" hidden>1080p Video</option>
-                            <option id="2k" value="2k" hidden>2k Video</option>
-                            <option id="4k" value="4k" hidden>4k Video</option>
+                            <option id="144p" value="144p" hidden>~ 144p Video</option>
+                            <option id="360p" value="360p" hidden>~ 360p Video</option>
+                            <option id="480p" value="480p" hidden>~ 480p Video</option>
+                            <option id='720p' value="720p" hidden>~ 720p Video</option>
+                            <option id="1080p" value="1080p" hidden>~ 1080p Video</option>
+                            <option id="2160p" value="2160p" hidden>~ 2k Video</option>
+                            <option id="4320p" value="4320p" hidden>~ 4k Video</option>
                         </select>
                         <select name="audioQuality" id="audioQuality" hidden >
                             <option value="" disabled selected>Select Audio Quality...</option>
@@ -65,7 +66,7 @@
                             <option id="96kbps" value="96kbps" hidden>~ 96kbps Audio</option>
                             <option id="128kbps" value="128kbps" hidden>~ 128kbps Audio</option>
                             <option id="160kbps" value="160kbps" hidden>~ 160kbps Audio</option>
-                            <option id="192kbps" value="192kbps">~ 192kbps Audio</option>
+                            <option id="192kbps" value="192kbps" hidden>~ 192kbps Audio</option>
                         </select>
                         <button name="qualitySelected" type="submit">Verify</button>
                     </div>
