@@ -83,7 +83,7 @@ def index(request):
                 elif VideoQuality == None and AudioQuality != None:
                     Qual = AudioQuality
                     print(Qual)
-                    type = 'Video'
+                    type = 'Audio'
                     audio = yt.streams.filter(abr=Qual)[0]
                     location = '/media/audio/' + fileName + '(CodeVinu).mp3'
                     audio.download(output_path='media/audio/', filename=(fileName + '(CodeVinu).mp3'))
