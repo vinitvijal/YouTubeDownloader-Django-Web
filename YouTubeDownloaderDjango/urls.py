@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from YouTube import views
+from YouTube import views as YTviews
+from AdLess import views as Adviews
 from django.conf.urls import url
 from django.conf import settings
 from django.views.static import serve
@@ -31,7 +32,8 @@ urlpatterns = [
         RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),
     ),
     path('admin/', admin.site.urls),
-    path('', views.index),
+    path('', YTviews.index),
+    path('adFree/', Adviews.adless),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
 

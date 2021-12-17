@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouMp4 AdFree - Vinu Code.</title>
+    <link rel="icon"href="{% static 'favicon.ico' %}">    
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600&family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+    <style>
+        .header {
+        }
+        .inputBar {
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        form {
+            flex-direction: row;
+        }
+        .inputBar input, button {
+            margin-top: 10px;
+            width: 35vw;
+            height: 30px;
+            border:1px solid rgb(98, 98, 98);
+            border-radius: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+
+        }
+        .inputBar form button {
+            border-radius: 5px;
+            margin-left: 5px;
+            width: auto;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        #videoPlayer {
+            width: 90%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header" >
+        <div onclick="home()" style="cursor: pointer; display: flex; flex-direction: column; justify-content: center;align-items: center;">
+            <span class="headText" ><span style="color:rgb(169, 216, 169);">Me</span>Tube Player - <span style="font-size: medium;">Vinu Code.</span></span>
+            <span class='headText' style="font-size: small;">Watch Your Videos Without Ad Breaks</span>
+        </div>
+    </div>
+    <div class="inputBar">
+        <form method="post">
+            {% csrf_token %}
+            <input name="link" id="link" type="text" placeholder="Enter Your YouTube Link :" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="main">
+        <video id="videoPlayer" controls controlslist="play"  name="media" >
+            <source src='{{ location }}' type="video/mp4">
+        </video>
+
+    </div>
+    <script>
+        var titleName = document.getElementById('titleName').innerText;
+        var download = document.getElementById('download');
+        var Disc = document.getElementById('Disc').innerText;
+        var qualityNum = document.getElementById('qualityNum').innerText;
+        var type = document.getElementById('filetype').innerText;
+        var downAvail = document.getElementById('downloadAvail').innerText;
+        var qualityList = {{qualityList|safe}}
+        console.log(titleName);
+        console.log(titleName.length)
+
+
+        if (qualityNum.length != 0){
+            console.log(qualityList)
+        };
+
+
+        if (type == "Video"){
+            document.querySelector('#qualitySelection').hidden = false;
+            document.querySelector('#videoQuality').hidden = false;
+            document.querySelector('#audioQuality').hidden = true;
+        }else if (type == 'Audio'){
+            document.querySelector('#qualitySelection').hidden = false;
+            document.querySelector('#videoQuality').hidden = true;
+            document.querySelector('#audioQuality').hidden = false;
+        }
+        console.log(downAvail);
+    
+
+
+        if (titleName.length != 0){
+            console.log(titleName.length)
+            document.getElementById('download').hidden = false;
+            console.log(titleName)
+        }else{
+            console.log('Else is Running')
+            document.querySelector('#download').hidden = true;
+        };
+
+        if (Disc.length != 0){
+            document.querySelector('#thumbNail').hidden = true;
+            document.querySelector('#videoPlayer').hidden = false;
+            document.querySelector('#down').hidden = true;
+
+        }else{
+            document.querySelector('#thumbNail').hidden = false;
+            document.querySelector('#videoPlayer').hidden = true;
+            document.querySelector('#down').hidden = false;
+        };
+        if (downAvail == 'Yes'){
+            document.querySelector('#down').hidden = false;
+        }else if(downAvail == 'No'){
+            document.querySelector('#down').hidden = true;
+
+        }else{
+            document.querySelector('#down').hidden = true;
+        }
+
+        for (let i in qualityList){
+            document.getElementById(qualityList[i]).hidden = false
+        }
+        document.getElementById('144p').hidden = true
+
+        function home(){
+        window.location.href = '/'
+};
+
+    </script>
+    <script>
+        
+        var config = {
+            apiKey: "AIzaSyDCjgFO78_6ZnSx2iFDGwp6xJYJqJkKrfM",
+            authDomain: "yoump4-c0836.firebaseapp.com",
+            databaseURL: "https://yoump4-c0836-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "yoump4-c0836",
+            storageBucket: "yoump4-c0836.appspot.com",
+            messagingSenderId: "102025580963",
+            appId: "1:102025580963:web:0a8b9785a415fe5554ca16",
+            measurementId: "G-MESZNM2B1K"
+        };
+            firebase.initializeApp(config);
+            firebase.analytics();
+            var db = firebase.firestore();
+
+            function upload(){
+                var filetype = "{{ type }}";
+                var link = "{{ link }}";
+                var name = "{{ videoName }}";
+                db.collection("YouMP4Downloads").add({
+                    FileType: type,
+                    Link: link,
+                    Name: name,
+                    Time: firebase.firestore.Timestamp.fromDate(new Date())
+                })
+                .then((docRef) => {
+                    console.log("Document written with ID: ", docRef.id);
+                    })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                });
+
+                console.log('Done Upload')
+            };
+
+
+      </script>
+    
+    
+<footer style="display: flex; justify-content: center; align-items: center; flex-direction: column">
+    <div>
+        <h4> Version : 0.2.2b </h4>
+    </div>
+    <div>
+        <h4>(Contact)  Instagram  :  <a href="https://www.instagram.com/its.vinit_vijal__/" style="text-decoration: none; color: darkblue;">Vinit Vijal</a></h4>
+    </div>
+</footer>
+    
+</body>
+</html>
