@@ -13,9 +13,9 @@ def index(request):
         videoName = yt.title
         length = yt.length
 
-        audioStream = yt.streams.filter(type='audio', abr='128kbps')[0].url
+        audioStream = yt.streams.filter(type='audio', mime_type='audio/mp4')[0].url
         print("audio = \n", audioStream, '\n\n')
-        videoStream = yt.streams.filter(progressive='true')[-1].url
+        videoStream = yt.streams.filter(progressive='true' )[-1].url
         print("video = \n", videoStream, '\n\n')
         fileName = nameConverter(videoName)
         print(videoName)
