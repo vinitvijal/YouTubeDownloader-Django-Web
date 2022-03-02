@@ -23,6 +23,7 @@ from django.views.static import serve
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
 from django.conf import settings
+from InstagramReels import views as Reels
 
 
 
@@ -35,7 +36,10 @@ urlpatterns = [
     path('', YTviews.index),
     path('adFree/', Adviews.adless),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    url(r'^Reels/media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+
     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    path('Reels/', Reels.index)
 
 ]
 

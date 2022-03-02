@@ -10,4 +10,4 @@ def adless(request):
         
 
     
-    return render(request, 'adless.html')
+    return render(request, 'instagram.html')
