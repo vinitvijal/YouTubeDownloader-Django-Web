@@ -4,39 +4,41 @@ from django.shortcuts import render
 import requests
 import random
 import os
+from instagrapi import Client
 
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:53.0) Gecko/20100101 Firefox/53.0'}
+cl = Client()
 
-def instaPost(linkSlice):
-    url = ((linkSlice)+'/?__a=1')
+
+def instaPost(url, typeOfData):
     print(url)
-    data = requests.get(url, headers=headers)
+    parent_dir = os.path.dirname(os.path.abspath('manage.py'))
+    main_dir = parent_dir + '/media'
+    path = os.path.join(main_dir, 'instaDown')
+    cl.login('ritikaraturi0812', '19122002')
 
-    if data.status_code == 200:
-        print("valid")
-    jsonData = data.json()
-    if jsonData['graphql']['shortcode_media']['__typename'] == 'GraphVideo':
-        local_file = str(random.randrange(10000000,900000000))+' - (CodeVinu).mp4'
-        downlink = jsonData['graphql']['shortcode_media']['video_url']
 
-    elif jsonData['graphql']['shortcode_media']['__typename'] == 'GraphImage':
-        local_file = str(random.randrange(10000000,900000000))+' - (CodeVinu).jpeg'
-        list_of_sources = jsonData['graphql']['shortcode_media']['display_resources']
-        downlink = list_of_sources[-1]['src']
+
+    if typeOfData == 2:
+        local_file = str(random.randrange(10000000,900000000))+'-(CodeVinu).mp4'
+
+    elif typeOfData == 1:
+        local_file = str(random.randrange(10000000,900000000))+'-(CodeVinu).jpeg'
+
 
     else:
         index(request)
     
-    os.chdir('media/instaDown')
-    data = requests.get(downlink)
+    os.chdir(path)
+    data = requests.get(url)
 
     with open(local_file, 'wb')as file:
         file.write(data.content)
         print('\nDownloaded Successfully!!!')
-    os.chdir('../../')
+    os.chdir(parent_dir)
+    return local_file
 
 
-def clean(folder='audio'):
+def clean(folder='insta'):
     directory = folder
     parent_dir = os.path.dirname(os.path.abspath('manage.py'))+'/media'
     print(parent_dir)
@@ -61,11 +63,23 @@ def index(request):
         print(typeOfData)
         print(link)
         if typeOfData == 'Post':
-            if link[26] == 'p':
-                linkSlice = link[0:39]
-                # Main Json and Download Section
-                instaPost(linkSlice)
-                
+            pk = cl.media_pk_from_url(link)
+            print(pk)
+            data = cl.media_info(pk).dict()
+            mediatype = data['media_type']
+            if mediatype == 2:
+                video_url = cl.media_info_gql(pk).video_url
+                print(video_url)
+                filename = instaPost(video_url, mediatype)
+                location = '/media/instaDown/' + filename
+        context = {
+            'downloadLink': location,
+        }
+        return render(request, 'insta.html', context=context)
+
+
+
+
     else:
 
         return render(request, 'insta.html')

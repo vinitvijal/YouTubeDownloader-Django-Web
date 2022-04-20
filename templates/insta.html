@@ -49,16 +49,16 @@
             <div class="selectorPanel">
                 <form method="post">
                     {% csrf_token %}
-                    <input type="radio" name="Post" class="Radio" value="Post" required>
+                    <input type="radio" name="Post"  class="Radio" value="Post" aria-selected>
                     <label for="Post">Post/Reels</label>
-                    <input type="radio" name="Post" class="Radio" value="Story" required>
-                    <label for="Post">Stories</label>
-                    <input type="radio" name="Post" class="Radio" value="Highlight" required>
-                    <label for="Post">Highlights</label>
+                    
                     <input type="url" name="link" id="link" placeholder="Paste Your Link..." required>
 
                     <button type="submit">Submit</button>
                 </form>
+                <video controls="" autoplay="" name="media"><source src="{{downloadLink}}" type="video/mp4"></video>
+                <a href="{{ downloadLink }}" download id="downloadLink" hidden>Download</a>
+                <p id="Link"  hidden>{{downloadLink}}</p>
             </div>
         </div>
     </div>
@@ -68,6 +68,14 @@
         function home() {
                    window.location.href = '/insta'
                };
+        var downloadLink = document.getElementById('Link').innerText;
+        console.log(downloadLink.length);
+        if (downloadLink.length != 0){
+            document.querySelector('#downloadLink').hidden = false;
+        }else{
+            document.querySelector('#downloadLink').hidden = true;
+
+        };
 
     </script>
 
